@@ -3,9 +3,9 @@ This is a program for the company “We Deliver” which helps it keep track of 
 
 
 This Repo includes:
-    1- Project prompt in pdf 
-    2- Read me file
-    3- main in .py format
+    1- Project prompt in pdf <br>
+    2- Read me file <br>
+    3- main in .py format <br>
 
 
 
