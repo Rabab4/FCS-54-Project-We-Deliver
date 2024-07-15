@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import uuid
 # Drivers' Menu
 def driversMenu():
     stop=False
@@ -26,7 +25,7 @@ def driversMenu():
 def viewDrivers():
     for driver_info in drivers_db:
         print(driver_info)
-        
+
 #Add a Driver
 def addDriver():
     global driver_count
