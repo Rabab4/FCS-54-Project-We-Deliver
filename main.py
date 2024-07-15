@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import uuid
 # Drivers' Menu
 def driversMenu():
     stop=False
@@ -28,8 +29,36 @@ def viewDrivers():
 
 #Add a Driver
 def addDriver():
-    message="this function enables the user to add the name and start city of the driver to the system"
-    return message
+    global driver_count
+    add=True
+    while add:
+        driver_name = input("Enter the name of the driver: ")
+        start_city = input("Enter the start city of the driver: ")
+
+        if start_city.lower() not in [city.lower() for city in cities_db]:
+            print(f"{start_city} is not in the database.")
+            add_city_choice = input("Do you want to add this city to the database? (yes/no): ").strip().lower()
+            if add_city_choice == "yes":
+                cities_db.append(start_city)
+                print(f"{start_city} has been added to the database.")
+                print("Update Cities Database: ")
+                print(cities_db)
+            else:
+                print("Driver not added. Returning to Drivers' Menu.")
+                return
+        
+        driver_count += 1
+        driver_id = f"ID{driver_count:03}"
+        drivers_db.append({"id": driver_id, "name": driver_name, "start_city": start_city})
+        print(f"Driver {driver_name} added successfully with ID {driver_id}.")
+        print("Updated Drivers List: ")
+        print(drivers_db)
+        add_choice=input("Do you want to add another driver? (yes/no): ").strip().lower()
+        if add_choice=="no":
+            add = False
+            print("Finished Adding drivers! Back to drivers' menu.")
+            
+            
 
 # Cities' Menu
 def citiesMenu():
@@ -58,4 +87,9 @@ def menu():
             stop= True
 
 
+
+driver_count = 0
+cities_db=["Saida", "Beirut", "Tyre", "Nabatieh", "Tripoli", "Jounieh", "Byblos", "Alay"]
+drivers_db=[]
 menu()
+
