@@ -24,9 +24,9 @@ def driversMenu():
             
 #View Drivers
 def viewDrivers():
-    message="this function shows a list of all the drivers and their detail is printed to the users"
-    return message
-
+    for driver_info in drivers_db:
+        print(driver_info)
+        
 #Add a Driver
 def addDriver():
     global driver_count
