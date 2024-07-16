@@ -1,4 +1,10 @@
 # -*- coding: utf-8 -*-
+#class Driver
+class Driver:
+    def __init__(self, driver_id, driver_name, start_city):
+        self.driver_id = driver_id
+        self.name = driver_name
+        self.start_city = start_city
 # Drivers' Menu
 def driversMenu():
     stop=False
@@ -8,7 +14,7 @@ def driversMenu():
         print("    1. To view all drives")
         print("    2. To add a driver")
         print("    3. To go back to the main menu")
-        choice=int(input())
+        choice=int(input("Enter your choice: "))
         choices=[1,2,3]
         while choice not in choices:
             print("Invalid input! Please try again: ")
@@ -23,8 +29,11 @@ def driversMenu():
             
 #View Drivers
 def viewDrivers():
-    for driver_info in drivers_db:
-        print(driver_info)
+    if not drivers_db:
+        print("No drivers in database")
+    else:
+        for driver in drivers_db:
+            print(driver)
 
 #Add a Driver
 def addDriver():
@@ -37,6 +46,7 @@ def addDriver():
         if start_city.lower() not in [city.lower() for city in cities_db]:
             print(f"{start_city} is not in the database.")
             add_city_choice = input("Do you want to add this city to the database? (yes/no): ").strip().lower()
+            #account for invalid input
             if add_city_choice == "yes":
                 cities_db.append(start_city)
                 print(f"{start_city} has been added to the database.")
@@ -48,11 +58,11 @@ def addDriver():
         
         driver_count += 1
         driver_id = f"ID{driver_count:03}"
-        drivers_db.append({"id": driver_id, "name": driver_name, "start_city": start_city})
+        new_driver=Driver(driver_id,driver_name,start_city)
+        drivers_db.append(new_driver)
         print(f"Driver {driver_name} added successfully with ID {driver_id}.")
-        print("Updated Drivers List: ")
-        print(drivers_db)
         add_choice=input("Do you want to add another driver? (yes/no): ").strip().lower()
+        #account for invalid input
         if add_choice=="no":
             add = False
             print("Finished Adding drivers! Back to drivers' menu.")
@@ -72,7 +82,7 @@ def menu():
         print("    1. To go to the drivers' menu")
         print("    2. To go to the cities' menu")
         print("    3. To exit the system")
-        choice=int(input())
+        choice=int(input("Enter your choice: "))
         choices=[1,2,3]
         while choice not in choices:
             print("Invalid input! Please try again: ")
