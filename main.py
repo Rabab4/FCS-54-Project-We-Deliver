@@ -2,8 +2,8 @@
 #class Driver
 class DriverDb:
     def __init__(self):
-        self.drivers=[]
-        self.driver_count=0
+        self.drivers=[["ID001","Alex","Jounieh"],["ID002","Ali","Nabatieh"],["ID003","Rim","Tripoli"],["ID004","Mohammad","Beirut"],["ID005","Jana","Saida"],["ID006","Taj","Tyre"],["ID007","Joe","Byblos"],["ID008","Faten","Alay"]]
+        self.driver_count=len(self.drivers)
 
     def generateDriverID(self):
         self.driver_count += 1
@@ -60,6 +60,7 @@ class Cities():
             self.graph[city2].append((city1,distance))
     
     def printNeighboringCities(self, city):
+        
         if city in self.cities_db: # Case Sensitive
             print(f"Neighboring cities for {city} with distances:")
             for neighbor, distance in self.graph[city]:
@@ -67,7 +68,25 @@ class Cities():
         else:
             print(f"No neighbors found for {city}.")
 
+    def availableDrivers(self, city, drivers):
+        reachables=[city]
+        if city in self.graph: #Case Sensitive
+            for neighbor in self.graph[city]:
+               reachables.append(neighbor[0])
+            all_drivers = []
+            for i in range (len (drivers)):
+                for reachable_city in reachables:
+                    if reachable_city in drivers[i]:
+                        all_drivers.append(drivers[i])
+            print(f"Drivers delivering to {city}:")
+            for driver in all_drivers:
+                print(driver)
+        else:
+            print(f"No drivers found for {city}.")
+
+
 C=Cities()
+
 
 C.addEdge("Beirut", "Saida", 44)
 C.addEdge("Saida", "Tyre", 38)
@@ -134,8 +153,9 @@ def citiesMenu():
         elif choice ==2:
             city=input("Enter the city name: ")
             C.printNeighboringCities(city)
-        #elif choice ==3:
-            #drivers delivering to city
+        elif choice ==3:
+            city=input("Enter the drop-off city name: ")
+            C.availableDrivers(city, driver.drivers)
         else:
             print("Back to main menu")
             stop= True
