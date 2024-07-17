@@ -11,10 +11,10 @@ class DriverDb:
         return self.driver_id
     
     def addDriver(self,driver_name, start_city, cities_db):
-        if city.cityExists(start_city):
+        if C.cityNotExists(start_city):
             add_city = input(f"City '{start_city}' is not in the database. Do you want to add it? (yes/no): ")
             if add_city.lower() == "yes":
-                city.addCity(start_city)
+                C.addCity(start_city)
                 print(f"City '{start_city}' added to the database.")
             else:
                 print("City not added. Driver not added.")
@@ -40,9 +40,11 @@ driver=DriverDb()
 class Cities():
     def __init__(self):
         self.cities_db=["Saida", "Beirut", "Tyre", "Nabatieh", "Tripoli", "Jounieh", "Byblos", "Alay"]
+        self.graph = {city: [] for city in self.cities_db}
     
-    def cityExists(self,city):
-        return city.lower() in (existing_city.lower() for existing_city in self.cities_db)
+    def cityNotExists(self,city):
+        return city.lower() not in (existing_city.lower() for existing_city in self.cities_db)
+   
 
     def addCity(self, city):
         self.cities_db.append(city)
@@ -51,8 +53,30 @@ class Cities():
         print("The cities in the program are: ")
         for i in self.cities_db:
             print(i)
+    
+    def addEdge(self, city1, city2, distance):
+        if city1 in self.cities_db and city2 in self.cities_db: #Case Sensitive
+            self.graph[city1].append((city2,distance))
+            self.graph[city2].append((city1,distance))
+    
+    def printNeighboringCities(self, city):
+        if city in self.cities_db: # Case Sensitive
+            print(f"Neighboring cities for {city} with distances:")
+            for neighbor, distance in self.graph[city]:
+                print(f"{neighbor}: {distance} Km")
+        else:
+            print(f"No neighbors found for {city}.")
 
-city=Cities()
+C=Cities()
+
+C.addEdge("Beirut", "Saida", 44)
+C.addEdge("Saida", "Tyre", 38)
+C.addEdge("Saida", "Nabatieh", 30)
+C.addEdge("Beirut", "Tripoli", 82)
+C.addEdge("Beirut", "Jounieh", 20)
+C.addEdge("Jounieh", "Byblos", 18.5)
+C.addEdge("Beirut", "Alay", 18.7)
+
 
 # Drivers' Menu
 def driversMenu():
@@ -75,7 +99,7 @@ def driversMenu():
             while add:
                 driver_name = input("Enter driver's name: ")
                 start_city = input("Enter driver's start city: ")
-                new_driver= driver.addDriver(driver_name, start_city, cities_db)
+                new_driver= driver.addDriver(driver_name, start_city, C.cities_db)
                 print(new_driver)
                 if new_driver:
                     print(f"Driver '{new_driver[1]}' with ID '{new_driver[0]}' added to the database.")
@@ -106,10 +130,11 @@ def citiesMenu():
             print("Invalid input! Please try again: ")
             choice=int(input())
         if choice==1:
-            city.showCity()
+            C.showCity()
         elif choice ==2:
-            #neighboring
-        elif choice ==3:
+            city=input("Enter the city name: ")
+            C.printNeighboringCities(city)
+        #elif choice ==3:
             #drivers delivering to city
         else:
             print("Back to main menu")
