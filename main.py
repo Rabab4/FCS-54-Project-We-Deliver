@@ -5,27 +5,27 @@ class DriverDb:
         self.drivers=[]
         self.driver_count=0
 
-    def generate_driver_id(self):
+    def generateDriverID(self):
         self.driver_count += 1
         self.driver_id=f"ID{self.driver_count:03}"
         return self.driver_id
     
-    def add_driver(self,driver_name, start_city, cities_db):
-        if start_city.lower() not in [city.lower() for city in cities_db]:
+    def addDriver(self,driver_name, start_city, cities_db):
+        if city.cityExists(start_city):
             add_city = input(f"City '{start_city}' is not in the database. Do you want to add it? (yes/no): ")
             if add_city.lower() == "yes":
-                cities_db.append(start_city)
+                city.addCity(start_city)
                 print(f"City '{start_city}' added to the database.")
             else:
                 print("City not added. Driver not added.")
                 return
 
-        self.driver_id = self.generate_driver_id()
+        self.driver_id = self.generateDriverID()
         new_driver = [self.driver_id, driver_name, start_city]
         self.drivers.append(new_driver)
         return new_driver
     
-    def view_drivers(self):
+    def viewDrivers(self):
         if not self.drivers:
             print("No drivers in the database.")
         else:
@@ -33,6 +33,26 @@ class DriverDb:
                 print(driver)
 
 driver=DriverDb()
+
+
+# Class Cities
+
+class Cities():
+    def __init__(self):
+        self.cities_db=["Saida", "Beirut", "Tyre", "Nabatieh", "Tripoli", "Jounieh", "Byblos", "Alay"]
+    
+    def cityExists(self,city):
+        return city.lower() in (existing_city.lower() for existing_city in self.cities_db)
+
+    def addCity(self, city):
+        self.cities_db.append(city)
+    
+    def showCity(self):
+        print("The cities in the program are: ")
+        for i in self.cities_db:
+            print(i)
+
+city=Cities()
 
 # Drivers' Menu
 def driversMenu():
@@ -49,13 +69,13 @@ def driversMenu():
             print("Invalid input! Please try again: ")
             choice=int(input())
         if choice==1:
-            driver.view_drivers()
+            driver.viewDrivers()
         elif choice ==2:
             add= True
             while add:
                 driver_name = input("Enter driver's name: ")
                 start_city = input("Enter driver's start city: ")
-                new_driver= driver.add_driver(driver_name, start_city, cities_db)
+                new_driver= driver.addDriver(driver_name, start_city, cities_db)
                 print(new_driver)
                 if new_driver:
                     print(f"Driver '{new_driver[1]}' with ID '{new_driver[0]}' added to the database.")
@@ -69,58 +89,35 @@ def driversMenu():
             print("Back to main menu")
             stop= True
             
-#View Drivers
-'''
-def viewDrivers():
-    if not drivers_db:
-        print("No drivers in database")
-    else:
-        for driver in drivers_db:
-            print(driver)
-'''
-
-#Add a Driver
-'''
-def addDriver():
-    global driver_count
-    add=True
-    while add:
-        driver_name = input("Enter the name of the driver: ")
-        start_city = input("Enter the start city of the driver: ")
-
-        if start_city.lower() not in [city.lower() for city in cities_db]:
-            print(f"{start_city} is not in the database.")
-            add_city_choice = input("Do you want to add this city to the database? (yes/no): ").strip().lower()
-            #account for invalid input
-            if add_city_choice == "yes":
-                cities_db.append(start_city)
-                print(f"{start_city} has been added to the database.")
-                print("Update Cities Database: ")
-                print(cities_db)
-            else:
-                print("Driver not added. Returning to Drivers' Menu.")
-                return
-        
-        driver_count += 1
-        driver_id = f"ID{driver_count:03}"
-        new_driver=Driver(driver_id,driver_name,start_city)
-        drivers_db.append(new_driver)
-        print(f"Driver {driver_name} added successfully with ID {driver_id}.")
-        add_choice=input("Do you want to add another driver? (yes/no): ").strip().lower()
-        #account for invalid input
-        if add_choice=="no":
-            add = False
-            print("Finished Adding drivers! Back to drivers' menu.")
-            
-'''           
 
 # Cities' Menu
 def citiesMenu():
-    message="This is the cities' menu"
-    return message
+    stop=False
+    while not stop:
+        print("Hello! This is the Cities' Menu.")
+        print("Please enter:")
+        print("    1. To show cities")
+        print("    2. To print neighboring cities")
+        print("    3. To print drivers delivering to city")
+        print("    4. To go back to main menu")
+        choice=int(input("Enter your choice: "))
+        choices=[1,2,3,4]
+        while choice not in choices:
+            print("Invalid input! Please try again: ")
+            choice=int(input())
+        if choice==1:
+            city.showCity()
+        elif choice ==2:
+            #neighboring
+        elif choice ==3:
+            #drivers delivering to city
+        else:
+            print("Back to main menu")
+            stop= True
+
 
 #Menu Function
-def menu():
+def mainMenu():
     stop=False
     while not stop:
         print("Hello! Please enter:")
@@ -140,10 +137,5 @@ def menu():
             print("The system is exiting. Good bye!")
             stop= True
 
-
-
-#driver_count = 0
-cities_db=["Saida", "Beirut", "Tyre", "Nabatieh", "Tripoli", "Jounieh", "Byblos", "Alay"]
-#drivers_db=[]
-menu()
+mainMenu()
 
