@@ -93,26 +93,30 @@ class Cities():
         else:
                 print(f" {city} not is database.") #no neighbors message
 
+    #method: print drivers in drop-off city and its neighbors
     def availableDrivers(self, city, drivers):
-        reachables=[city]
+        #reachables: list of cities whose drivers can reach drop-off city
+        reachables=[city] #initiatize the list with the drop-off city itself
         if city in self.graph: #Case Sensitive
-            for neighbor in self.graph[city]:
-               reachables.append(neighbor[0])
-            all_drivers = []
-            for i in range (len (drivers)):
-                for reachable_city in reachables:
-                    if reachable_city in drivers[i]:
-                        all_drivers.append(drivers[i])
+            for neighbor in self.graph[city]: #iterate over neighbors
+               reachables.append(neighbor[0]) #append neighboring cities to the reachables list (without distances)
+            all_drivers = [] #list of available drives in the reachable cities
+            for i in range (len (drivers)):  #loop over all drivers list
+                for reachable_city in reachables: #for every city in the list
+                    if reachable_city in drivers[i]: #check if the drivers start city is same as rechable city
+                        all_drivers.append(drivers[i]) #if yes, add the drivers info to the all drivers list
+            #print availabe drives
             print(f"Drivers delivering to {city}:")
             for driver in all_drivers:
                 print(driver)
         else:
+            #no drivers available
             print(f"No drivers found for {city}.")
 
-
+#to call cities class
 C=Cities()
 
-
+#adding weighted edges to the cities graph
 C.addEdge("Beirut", "Saida", 44)
 C.addEdge("Saida", "Tyre", 38)
 C.addEdge("Saida", "Nabatieh", 30)
