@@ -44,37 +44,54 @@ driver=DriverDb()
 
 
 # Class Cities
-
+#This class has methods to view cities saved in the program, add to the cities after checking duplicates, 
+# and creating graphs representing links between cities with ditances being weighs
 class Cities():
-    def __init__(self):
-        self.cities_db=["Saida", "Beirut", "Tyre", "Nabatieh", "Tripoli", "Jounieh", "Byblos", "Alay"]
-        self.graph = {city: [] for city in self.cities_db}
+    def __init__(self): #constructor
+        self.cities_db=["Saida", "Beirut", "Tyre", "Nabatieh", "Tripoli", "Jounieh", "Byblos", "Alay","ghazieh"] #list of cities
+        self.graph = {city: [] for city in self.cities_db} #graph of cities
     
+
+    #method: check if a new city is NOT in the cities list
     def cityNotExists(self,city):
-        return city.lower() not in (existing_city.lower() for existing_city in self.cities_db)
+        #case insensitive
+        return city.lower() not in (existing_city.lower() for existing_city in self.cities_db) #generator expression
    
 
+    #method: add city to cities db
     def addCity(self, city):
-        self.cities_db.append(city)
+        self.cities_db.append(city)  #add new city by appending the list
+        self.graph = {city: [] for city in self.cities_db} #update graph with new city
     
+    #method: print cities in db
     def showCity(self):
         print("The cities in the program are: ")
+        #iterate over all elements in db
         for i in self.cities_db:
-            print(i)
+            print(i) #print iterator
     
+    #method: add edges to graph
     def addEdge(self, city1, city2, distance):
+        #if 2 cities are available in db
         if city1 in self.cities_db and city2 in self.cities_db: #Case Sensitive
-            self.graph[city1].append((city2,distance))
-            self.graph[city2].append((city1,distance))
+            #weighted (distance) undirected (works both ways) graph
+            self.graph[city1].append((city2,distance)) #add neighboring relationship (thru edge) from C1 to C2 with dist(weight)
+            self.graph[city2].append((city1,distance))#add neighboring relationship (thru edge) from C2 to C1 with dist(weight)
     
+
+    #method: for an input city, print all neighboring cities (having edges connecting them)
     def printNeighboringCities(self, city):
-        
+        #check if input city is in db
         if city in self.cities_db: # Case Sensitive
             print(f"Neighboring cities for {city} with distances:")
-            for neighbor, distance in self.graph[city]:
-                print(f"{neighbor}: {distance} Km")
+            #iterate over the elements of the graph
+            if (self.graph[city]):
+                for neighbor, distance in self.graph[city]:
+                    print(f"{neighbor}: {distance} Km") #print neighbors with relative dist
+            else:
+                print(f"No neighbors found for {city}.") #no neighbors message
         else:
-            print(f"No neighbors found for {city}.")
+                print(f" {city} not is database.") #no neighbors message
 
     def availableDrivers(self, city, drivers):
         reachables=[city]
