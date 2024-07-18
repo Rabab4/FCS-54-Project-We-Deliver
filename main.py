@@ -2,20 +2,20 @@
 #This class has methods to add drivers with unique IDs and view them
 class DriverDb:
     #constructor 
-    def __init__(self):
+    def __init__(self): #O(1)
         #drivers saved in the program
         self.drivers=[["ID001","Alex","Jounieh"],["ID002","Ali","Nabatieh"],["ID003","Rim","Tripoli"],["ID004","Mohammad","Beirut"],["ID005","Jana","Saida"],["ID006","Taj","Tyre"],["ID007","Joe","Byblos"],["ID008","Faten","Alay"]]
         self.driver_count=len(self.drivers)   #number of drivers saved in program
 
     #method: generates ID for new driver based on his/her number in the list
-    def generateDriverID(self):
+    def generateDriverID(self): #O(1)
         self.driver_count += 1  #add on to driver count representing new driver
         self.driver_id=f"ID{self.driver_count:03}"   #ID format: ID with 3 digits of 0s and drivers number
         return self.driver_id
     
 
     #method: add new drivers to the program
-    def addDriver(self,driver_name, start_city):
+    def addDriver(self,driver_name, start_city): #O(n) n: nb of cities
         if C.cityNotExists(start_city): #if city is not already saved 
             #ask user if he/she wants to add it
             add_city = input(f"City '{start_city}' is not in the database. Do you want to add it? (yes/no): ") 
@@ -32,7 +32,7 @@ class DriverDb:
         return new_driver
     
     #method: print all drivers in the database in form: id, name, start city
-    def viewDrivers(self):
+    def viewDrivers(self): #O(n) n:nb of drivers
         if not self.drivers: #if no drivers available
             print("No drivers in the database.") 
         else:
@@ -47,31 +47,31 @@ driver=DriverDb()
 #This class has methods to view cities saved in the program, add to the cities after checking duplicates, 
 # and creating graphs representing links between cities with ditances being weighs
 class Cities():
-    def __init__(self): #constructor
+    def __init__(self): #constructor O(1)
         self.cities_db=["Saida", "Beirut", "Tyre", "Nabatieh", "Tripoli", "Jounieh", "Byblos", "Alay","ghazieh"] #list of cities
         self.graph = {city: [] for city in self.cities_db} #graph of cities
     
 
     #method: check if a new city is NOT in the cities list
-    def cityNotExists(self,city):
+    def cityNotExists(self,city): #O(n) n:nb of cities
         #case insensitive
         return city.lower() not in (existing_city.lower() for existing_city in self.cities_db) #generator expression
    
 
     #method: add city to cities db
-    def addCity(self, city):
+    def addCity(self, city): #O(1)
         self.cities_db.append(city)  #add new city by appending the list
         self.graph = {city: [] for city in self.cities_db} #update graph with new city
     
     #method: print cities in db
-    def showCity(self):
+    def showCity(self): #O(n) n:nb of cities
         print("The cities in the program are: ")
         #iterate over all elements in db
         for i in self.cities_db:
             print(i) #print iterator
     
     #method: add edges to graph
-    def addEdge(self, city1, city2, distance):
+    def addEdge(self, city1, city2, distance): #O(n) n: nb of cities
         #if 2 cities are available in db
         if city1 in self.cities_db and city2 in self.cities_db: #Case Sensitive
             #weighted (distance) undirected (works both ways) graph
@@ -80,13 +80,13 @@ class Cities():
     
 
     #method: for an input city, print all neighboring cities (having edges connecting them)
-    def printNeighboringCities(self, city):
+    def printNeighboringCities(self, city): #O(n*m)
         #check if input city is in db
-        if city in self.cities_db: # Case Sensitive
+        if city in self.cities_db: # Case Sensitive   O(n) n:nb of cities
             print(f"Neighboring cities for {city} with distances:")
             #iterate over the elements of the graph
             if (self.graph[city]):
-                for neighbor, distance in self.graph[city]:
+                for neighbor, distance in self.graph[city]: #O(m) m:edges related to city
                     print(f"{neighbor}: {distance} Km") #print neighbors with relative dist
             else:
                 print(f"No neighbors found for {city}.") #no neighbors message
@@ -97,17 +97,17 @@ class Cities():
     def availableDrivers(self, city, drivers):
         #reachables: list of cities whose drivers can reach drop-off city
         reachables=[city] #initiatize the list with the drop-off city itself
-        if city in self.graph: #Case Sensitive
-            for neighbor in self.graph[city]: #iterate over neighbors
+        if city in self.graph: #Case Sensitive    O(n) n:nb of cities
+            for neighbor in self.graph[city]: #iterate over neighbors   O(m) m: edges related to city
                reachables.append(neighbor[0]) #append neighboring cities to the reachables list (without distances)
             all_drivers = [] #list of available drives in the reachable cities
-            for i in range (len (drivers)):  #loop over all drivers list
-                for reachable_city in reachables: #for every city in the list
-                    if reachable_city in drivers[i]: #check if the drivers start city is same as rechable city
+            for i in range (len (drivers)):  #loop over all drivers list    O(k) k:nb of drivers
+                for reachable_city in reachables: #for every city in the list    O(j) j:nb of neighboring cities
+                    if reachable_city in drivers[i]: #check if the drivers start city is same as rechable city  #O(k) k:nb of drivers
                         all_drivers.append(drivers[i]) #if yes, add the drivers info to the all drivers list
             #print availabe drives
             print(f"Drivers delivering to {city}:")
-            for driver in all_drivers:
+            for driver in all_drivers: #O(i) i: nb of drivers in reachable cities
                 print(driver)
         else:
             #no drivers available
