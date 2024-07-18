@@ -125,10 +125,10 @@ C.addEdge("Beirut", "Jounieh", 20)
 C.addEdge("Jounieh", "Byblos", 18.5)
 C.addEdge("Beirut", "Alay", 18.7)
 
-
+##################### Menus of the Program #####################
 # Drivers' Menu
 def driversMenu():
-    stop=False
+    stop=False 
     while not stop:
         print("Hello! This is the Drivers' Menu.")
         print("Please enter:")
@@ -139,27 +139,27 @@ def driversMenu():
         choices=[1,2,3]
         while choice not in choices:
             print("Invalid input! Please try again: ")
-            choice=int(input())
+            choice=int(input()) #does not work if user inputs other than digits
         if choice==1:
-            driver.viewDrivers()
+            driver.viewDrivers() 
         elif choice ==2:
             add= True
             while add:
-                driver_name = input("Enter driver's name: ")
-                start_city = input("Enter driver's start city: ")
-                new_driver= driver.addDriver(driver_name, start_city)
+                driver_name = input("Enter driver's name: ") #input new drivers name
+                start_city = input("Enter driver's start city: ") #input new city name
+                new_driver= driver.addDriver(driver_name, start_city) 
                 print(new_driver)
                 if new_driver:
                     print(f"Driver '{new_driver[1]}' with ID '{new_driver[0]}' added to the database.")
                 #print(f"Driver '{new_driver['name']}' with ID '{new_driver['driver_id']}' added to the database.")
-                add_choice=input("Do you want to add another driver? (yes/no): ").strip().lower() 
+                add_choice=input("Do you want to add another driver? (yes/no): ").strip().lower() #add another driver
                 if add_choice=="no":
                     add = False
                     print("Finished Adding drivers! Back to drivers' menu.")
 
         else:
             print("Back to main menu")
-            stop= True
+            stop= True #quit drivers menu, back to main menu
             
 
 # Cities' Menu
@@ -172,7 +172,7 @@ def citiesMenu():
         print("    2. To print neighboring cities")
         print("    3. To print drivers delivering to city")
         print("    4. To go back to main menu")
-        choice=int(input("Enter your choice: "))
+        choice=int(input("Enter your choice: ")) #error for input other than digits
         choices=[1,2,3,4]
         while choice not in choices:
             print("Invalid input! Please try again: ")
@@ -187,7 +187,7 @@ def citiesMenu():
             C.availableDrivers(city, driver.drivers)
         else:
             print("Back to main menu")
-            stop= True
+            stop= True #quit cities menu back to main menu
 
 
 #Menu Function
@@ -202,14 +202,14 @@ def mainMenu():
         choices=[1,2,3]
         while choice not in choices:
             print("Invalid input! Please try again: ")
-            choice=int(input())
+            choice=int(input()) #error for input other than digits
         if choice==1:
             driversMenu()
         elif choice ==2:
             print(citiesMenu())
         else:
             print("The system is exiting. Good bye!")
-            stop= True
+            stop= True #quit program
 
 mainMenu()
 
