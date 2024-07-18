@@ -1,37 +1,45 @@
-# -*- coding: utf-8 -*-
-#class Driver
+#class DriverDb
+#This class has methods to add drivers with unique IDs and view them
 class DriverDb:
+    #constructor 
     def __init__(self):
+        #drivers saved in the program
         self.drivers=[["ID001","Alex","Jounieh"],["ID002","Ali","Nabatieh"],["ID003","Rim","Tripoli"],["ID004","Mohammad","Beirut"],["ID005","Jana","Saida"],["ID006","Taj","Tyre"],["ID007","Joe","Byblos"],["ID008","Faten","Alay"]]
-        self.driver_count=len(self.drivers)
+        self.driver_count=len(self.drivers)   #number of drivers saved in program
 
+    #method: generates ID for new driver based on his/her number in the list
     def generateDriverID(self):
-        self.driver_count += 1
-        self.driver_id=f"ID{self.driver_count:03}"
+        self.driver_count += 1  #add on to driver count representing new driver
+        self.driver_id=f"ID{self.driver_count:03}"   #ID format: ID with 3 digits of 0s and drivers number
         return self.driver_id
     
-    def addDriver(self,driver_name, start_city, cities_db):
-        if C.cityNotExists(start_city):
-            add_city = input(f"City '{start_city}' is not in the database. Do you want to add it? (yes/no): ")
-            if add_city.lower() == "yes":
-                C.addCity(start_city)
-                print(f"City '{start_city}' added to the database.")
+
+    #method: add new drivers to the program
+    def addDriver(self,driver_name, start_city):
+        if C.cityNotExists(start_city): #if city is not already saved 
+            #ask user if he/she wants to add it
+            add_city = input(f"City '{start_city}' is not in the database. Do you want to add it? (yes/no): ") 
+            if add_city.lower() == "yes": #if yes: case insensitive
+                C.addCity(start_city) #add city to cities list
+                print(f"City '{start_city}' added to the database.") #inform user that city was added 
             else:
-                print("City not added. Driver not added.")
+                print("City not added. Driver not added.") #if user chose no, city and driver are not added
                 return
 
-        self.driver_id = self.generateDriverID()
-        new_driver = [self.driver_id, driver_name, start_city]
-        self.drivers.append(new_driver)
+        self.driver_id = self.generateDriverID() # id generted for new driver
+        new_driver = [self.driver_id, driver_name, start_city] #new driver list formed
+        self.drivers.append(new_driver) #new driver appended to drivers list
         return new_driver
     
+    #method: print all drivers in the database in form: id, name, start city
     def viewDrivers(self):
-        if not self.drivers:
-            print("No drivers in the database.")
+        if not self.drivers: #if no drivers available
+            print("No drivers in the database.") 
         else:
-            for driver in self.drivers:
-                print(driver)
+            for driver in self.drivers: #iterate over the elements of the list of lists (drivers)
+                print(driver) #print the iterator (each driver's info)
 
+#used to call the class
 driver=DriverDb()
 
 
@@ -118,7 +126,7 @@ def driversMenu():
             while add:
                 driver_name = input("Enter driver's name: ")
                 start_city = input("Enter driver's start city: ")
-                new_driver= driver.addDriver(driver_name, start_city, C.cities_db)
+                new_driver= driver.addDriver(driver_name, start_city)
                 print(new_driver)
                 if new_driver:
                     print(f"Driver '{new_driver[1]}' with ID '{new_driver[0]}' added to the database.")
